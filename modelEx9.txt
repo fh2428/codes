@@ -1,0 +1,21 @@
+model{
+  
+  for(i in 1:n){
+    Ltsh[i]  <- log(tsh[i])
+  }
+  
+  for(i in 1:n){
+    Ltsh[i] ~ dnorm(mu[i] , tau)
+    mu[i] <- alpha1 + alpha2*birthweight[i] + alpha3*gender[i] + alpha4*birthweight[i]*gender[i]
+  } 
+  # prior for the regression parameters
+  alpha1 ~ dnorm(0, 1.0E-9)
+  alpha2 ~ dnorm(0, 1.0E-9)
+  alpha3 ~ dnorm(0, 1.0E-9)
+  alpha4 ~ dnorm(0, 1.0E-9)
+  # prior for the precision parameter
+  tau ~ dgamma(1.0E-3,1.0E-3)
+  
+  # monitoring the standard deviation
+  s <-  1/sqrt(tau)
+}
